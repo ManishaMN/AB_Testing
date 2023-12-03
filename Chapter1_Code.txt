@@ -1,0 +1,49 @@
+# Determine the normalized distribution of browser counts
+checkout['browser'].value_counts(normalize = True)
+
+# Draw a random sample of rows
+sample_df = checkout.sample(n = 2000)
+
+# Check the counts distribution of sampled users' browsers
+sample_df['browser'].value_counts(normalize = True)
+
+# Check the counts distribution of browsers across checkout pages
+checkout.groupby('checkout_page')['browser'].value_counts(normalize = True)
+
+# Import seaborn for visualization
+import seaborn as sns
+
+# Visualize the variables in a pairplot
+sns.pairplot(admissions[['Serial No.', 'TOEFL Score', 'SOP', 'Chance of Admit']])
+plt.show()
+
+# Print Pearson's correlation coefficients
+print(admissions[['Serial No.', 'TOEFL Score', 'SOP','Chance of Admit']].corr())
+
+# Visualize the coefficients in a heatmap
+sns.heatmap(admissions[['Serial No.', 'TOEFL Score', 'SOP','Chance of Admit']].corr(), annot = True)
+plt.show()
+
+# Calculate the mean order value for each group
+checkout.groupby('checkout_page')['order_value'].mean()
+
+# Calculate the proportion of users who purchased for each page
+checkout.groupby('checkout_page')['purchased'].mean()
+
+# Calculate the proportion of users who purchased and the mean order value
+checkout.groupby('checkout_page')[['purchased', 'order_value']].mean()
+
+
+----------------------------------------
+
+# Filter on users who responded 
+AdSmart_Responded = AdSmart[(AdSmart['yes'] == 1) | (AdSmart['no'] == 1)]
+
+# Find the counts of yes after 2020-07-05 per experiment
+AdSmart_Responded[(AdSmart_Responded['date'] > '2020-07-05')].groupby('experiment').count()
+
+# Proportion of users who responded 'yes' by experiment type
+AdSmart_Responded.groupby('experiment')['yes'].mean()
+
+# Proportion of users who responded 'yes' by experiment type and platform OS
+AdSmart_Responded.groupby(['experiment','platform_os'])['yes'].mean()
